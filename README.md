@@ -11,7 +11,7 @@ This project is based on the U-Net implementation from [Milesial's Pytorch-UNet 
 - Apply depth-based masking to reduce the influence of background regions.
 - Generate probability maps, binary segmentation masks, and visual overlays.
 - Run inference on a CPU or CUDA-compatible GPU.
-- Use the model in Python or through a Google Colab notebook (notebook setup to be added).
+- Support future integration with Google Colab.
 
 ## Repository Structure
 
@@ -26,11 +26,11 @@ This project is based on the U-Net implementation from [Milesial's Pytorch-UNet 
 │   ├── unet_model.py
 │   └── unet_parts.py
 ├── weights/
-│   └── best_model_UNET_Combined_V3_Public_Summer.pth
+│   └── trained_weights.pth
 └── Tree_Branch_Prediction.ipynb
 ```
 
-The checkpoint and Colab notebook may not yet be available in the repository.
+The `weights/` directory and Colab notebook may not yet be available in the repository.
 
 ## Model Information
 
@@ -67,19 +67,21 @@ For GPU inference, install a PyTorch version compatible with your CUDA environme
 
 ## Model Checkpoint
 
-The trained model checkpoint is:
+The trained model checkpoint is named:
 
-`best_model_UNET_Combined_V3_Public_Summer.pth`
+`trained_weights.pth`
 
-The checkpoint is not included directly in this README. Once it is hosted, download it from the project's designated release or model-storage location and place it in the `weights/` directory.
-
-The default checkpoint path expected by `predict.py` is:
+Place the checkpoint in the `weights/` directory:
 
 ```text
-weights/best_model_UNET_Combined_V3_Public_Summer.pth
+weights/trained_weights.pth
 ```
 
-Alternatively, specify another checkpoint location using the `--checkpoint` argument.
+The checkpoint is approximately 373 MB and should be hosted using GitHub Releases or Git LFS rather than uploaded as a regular file through GitHub's web interface.
+
+Once the checkpoint is hosted, download it and place it in the `weights/` directory before running predictions.
+
+The inference script uses this location by default. Alternatively, specify a different checkpoint path using the `--checkpoint` argument.
 
 ## Input Images
 
@@ -104,13 +106,13 @@ python predict.py \
     --depth path/to/depth.png
 ```
 
-To specify a checkpoint and output directory:
+To specify the checkpoint and output directory:
 
 ```bash
 python predict.py \
     --rgb path/to/rgb.png \
     --depth path/to/depth.png \
-    --checkpoint weights/best_model_UNET_Combined_V3_Public_Summer.pth \
+    --checkpoint weights/trained_weights.pth \
     --output-dir predictions
 ```
 
