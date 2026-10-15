@@ -11,8 +11,6 @@ This project uses these components for tree-branch segmentation.
 Any project-specific modifications should be documented here.
 """
 
-""" Parts of the U-Net model """
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
