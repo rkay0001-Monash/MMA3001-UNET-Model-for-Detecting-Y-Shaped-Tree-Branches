@@ -1,3 +1,16 @@
+"""
+Parts of the U-Net model.
+
+Based on the U-Net implementation from Milesial:
+https://github.com/milesial/Pytorch-UNet
+
+The original implementation is distributed under the GNU General Public
+License v3.0 (GPL-3.0). See the repository's LICENSE file.
+
+This project uses these components for tree-branch segmentation.
+Any project-specific modifications should be documented here.
+"""
+
 """ Parts of the U-Net model """
 
 import torch
