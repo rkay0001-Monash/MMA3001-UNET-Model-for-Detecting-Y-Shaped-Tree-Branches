@@ -1,4 +1,15 @@
-""" Full assembly of the parts to form the complete network """
+"""
+Full assembly of the parts to form the complete U-Net network.
+
+Based on the U-Net implementation from Milesial:
+https://github.com/milesial/Pytorch-UNet
+
+The original implementation is distributed under the GNU General Public
+License v3.0 (GPL-3.0). See the repository's LICENSE file.
+
+This project uses the architecture for tree-branch segmentation.
+Any project-specific modifications should be documented here.
+"""
 
 from .unet_parts import *
 
