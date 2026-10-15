@@ -48,7 +48,7 @@ from unet import UNet
 DEFAULT_CHECKPOINT = (
     Path(__file__).resolve().parent
     / "weights"
-    / "best_model_UNET_Combined_V3_Public_Summer.pth"
+    / "trained_weights.pth"
 )
 DEFAULT_SIZE = 256
 DEFAULT_THRESHOLD = 0.5
