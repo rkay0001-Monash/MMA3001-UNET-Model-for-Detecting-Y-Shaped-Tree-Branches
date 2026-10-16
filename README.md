@@ -226,11 +226,18 @@ Predictions on alternative datasets should be validated before being treated as 
 
 This project builds on the U-Net implementation from [Milesial's Pytorch-UNet repository](https://github.com/milesial/Pytorch-UNet).
 
-The original implementation is distributed under the GNU General Public License v3.0 (GPL-3.0). See the `LICENSE` file for the applicable licence terms. Copyright notices and licence terms for reused source code should be retained.
+The original U-Net implementation is distributed under the GNU General Public License v3.0 (GPL-3.0). See the `LICENSE` file for the applicable licence terms. Copyright notices and licence terms for reused source code should be retained.
 
-The project-specific preprocessing, inference code, and model configuration are intended for tree-branch segmentation. The notebook also uses a YOLO11-based workflow for apple segmentation; the applicable software licences and model-weight redistribution terms should be checked separately.
+The project-specific preprocessing, inference code, and model configuration are intended for tree-branch segmentation.
 
-The provenance and redistribution terms of the trained checkpoints and any datasets should be checked before redistribution. The original private dataset must not be redistributed without appropriate permission.
+The Google Colab notebook also uses [Ultralytics YOLO11](https://github.com/ultralytics/ultralytics) for apple segmentation. Ultralytics distributes its software and models under the GNU Affero General Public License v3.0 (AGPL-3.0), subject to the applicable licensing terms. See the [Ultralytics licensing information](https://www.ultralytics.com/license) for details.
+
+Users redistributing or adapting the combined project should review the applicable licence obligations for both the U-Net implementation and Ultralytics YOLO11. In particular, the AGPL-3.0 requirements may affect how the combined project and its corresponding source code must be licensed and distributed. The existing GPL-3.0 `LICENSE` file should not be assumed to satisfy all YOLO11 licensing requirements.
+
+The provenance and redistribution terms of trained checkpoints and model weights should be checked separately before redistribution. The original private dataset must not be redistributed without appropriate permission.
+
+This acknowledgement is provided for attribution and informational purposes and does not replace the applicable software licences.
+
 
 ## Disclaimer
 
