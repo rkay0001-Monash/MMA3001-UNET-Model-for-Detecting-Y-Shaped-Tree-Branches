@@ -8,9 +8,15 @@ The repository also includes a Google Colab notebook, `Tree_Branch_Prediction.ip
 
 ## Important Notice — Dataset Access
 
-**The dataset used by the Google Colab notebook is not publicly accessible.** The original images are stored in a private Google Drive folder, and users must obtain permission from the dataset owner to access them.
+The project uses four source datasets, two of which are hosted in private Google Drive folders and require permission from the dataset owner.
 
-Users without access to the original dataset must provide their own suitable images and modify the notebook's dataset-loading configuration as necessary. Changing the dataset path alone may not be sufficient, as the notebook relies on specific filename conventions, image modalities, preprocessing steps, and compatible trained models.
+**Private Google Drive datasets:**
+- [Dataset](https://drive.google.com/drive/folders/1rAr6JVprJ-rmQ0GoO3ahjqBHCiAPz_A3)
+- [Dataset (with Summer GT)](https://drive.google.com/drive/folders/10mZmi3jVzdRv7txFnr_6MFrqA34dS0nW)
+
+Users without access to these datasets must provide their own suitable images and modify the dataset-loading configuration as necessary. Changing the dataset path alone may not be sufficient, as the notebook relies on specific filename conventions, image modalities, preprocessing steps, and compatible trained models.
+
+The other two datasets, [HOB-CNN Unsplit Images](https://github.com/ZijueChen/HOBCNN-v2/tree/main/data_combined) and [Public Y-Shaped Trees](https://github.com/ZijueChen/HOB-CNN/blob/main/Public%20Y-shaped%20Tree%20Dataset.zip), are linked to publicly accessible sources. They may still require preprocessing before they can be used with the project's training or inference workflows.
 
 ## Features
 
@@ -39,15 +45,21 @@ The standalone `predict.py` script focuses on U-Net branch segmentation. The com
 .
 ├── README.md
 ├── LICENSE
-├── requirements.txt
-├── predict.py
-├── unet/
-│   ├── __init__.py
-│   ├── unet_model.py
-│   └── unet_parts.py
-├── weights/
-│   └── trained_weights.pth
-└── Tree_Branch_Prediction.ipynb
+├── Tree_Prediction_Code.ipynb
+│
+├── Branch Prediction Model/
+│   ├── requirements.txt
+│   ├── Tree_Branch_Prediction.ipynb
+│   ├── predict.py
+│   │
+│   └── U-Net/
+│       ├── __init__.py
+│       ├── unet_model.py
+│       └── unet_parts.py
+│
+└── Image Preprocessing Files/
+    ├── HOB-CNN_Image_Splitter.ipynb
+    └── Manual_GT_Mask_Aligner.ipynb
 ```
 
 The exact files available in the repository may vary. The trained checkpoint may be hosted separately rather than committed directly to the repository. The private dataset and generated prediction outputs are not intended to be included.
