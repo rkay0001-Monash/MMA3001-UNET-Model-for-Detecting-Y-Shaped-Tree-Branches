@@ -52,6 +52,48 @@ The standalone `predict.py` script focuses on U-Net branch segmentation. The com
 
 The exact files available in the repository may vary. The trained checkpoint may be hosted separately rather than committed directly to the repository. The private dataset and generated prediction outputs are not intended to be included.
 
+## Datasets
+
+The project uses four source datasets for tree-branch segmentation and model development. These datasets contain raw images and may require preprocessing before they can be used with the training or inference workflows.
+
+- **[Dataset (with Summer GT)](https://drive.google.com/drive/folders/10mZmi3jVzdRv7txFnr_6MFrqA34dS0nW)** — Source dataset containing Summer ground-truth annotations.
+- **[Dataset](https://drive.google.com/drive/folders/1rAr6JVprJ-rmQ0GoO3ahjqBHCiAPz_A3)** — Additional source dataset used for tree-branch segmentation.
+- **[HOB-CNN Unsplit Images](https://github.com/ZijueChen/HOBCNN-v2/tree/main/data_combined)** — Combined HOB-CNN images before being split into separate Summer/Winter RGB and ground-truth datasets.
+- **[Public Y-Shaped Trees](https://github.com/ZijueChen/HOB-CNN/blob/main/Public%20Y-shaped%20Tree%20Dataset.zip)** — Public dataset containing Y-shaped tree images for branch segmentation.
+
+These are source datasets and may require additional processing, such as splitting combined images, aligning ground-truth masks, or preparing RGB and depth inputs. Check the preprocessing notebooks and model configuration before using the datasets.
+
+## Image Preprocessing Files
+
+The repository includes two notebooks for preparing datasets before they can be used in the tree-branch segmentation workflow.
+
+### HOB-CNN Image Splitter
+
+`HOB-CNN_Image_Splitter.ipynb`
+
+Downloads the combined images from the [HOB-CNNv2 dataset](https://github.com/ZijueChen/HOBCNN-v2/tree/main/data_combined) and splits each 2×2 image into four separate datasets:
+
+- Summer RGB
+- Winter RGB
+- Summer ground truth
+- Winter ground truth
+
+The resulting images are saved into separate folders for use in the tree-branch segmentation workflow.
+
+This notebook prepares the images; it does not train the HOB-CNN model.
+
+### Manual GT Mask Aligner
+
+`Manual_GT_Mask_Aligner.ipynb`
+
+Aligns the ground-truth (GT) images from the [Dataset (with Summer GT)](https://drive.google.com/drive/folders/10mZmi3jVzdRv7txFnr_6MFrqA34dS0nW) source with their corresponding RGB-D images, since the original GT images do not match the RGB-D images in their initial alignment.
+
+The aligned GT masks are intended for use with Summer RGB-D images.
+
+**Winter alignment limitation:** The alignment of these GT masks with Winter images varies. Some Winter images have a reasonable fit, while others are significantly misaligned. Winter GT comparisons should therefore be treated cautiously and checked visually.
+
+These notebooks are intended for dataset preparation and image processing, rather than standalone model inference. Check the resulting image alignment and directory structure before using the processed images for training, validation, or testing.
+
 ## Model Information
 
 The V3 U-Net model uses the following configuration:
