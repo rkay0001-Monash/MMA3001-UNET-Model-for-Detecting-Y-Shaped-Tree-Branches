@@ -94,3 +94,7 @@ def preprocess_pair(
 
     # The training notebook explicitly rejects misaligned source dimensions.
     if rgb.shape[:2] != depth.shape[:2]:
+        raise ValueError(
+            f"RGB and depth dimensions must match; "
+            f"got RGB {rgb.shape[:2]} and depth {depth.shape[:2]}"
+        )
