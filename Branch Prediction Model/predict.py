@@ -80,21 +80,94 @@ def preprocess_pair(
     size: int = DEFAULT_SIZE,
 ) -> torch.Tensor:
     """
-    Apply the V3 seasonal RGB/depth preprocessing to one image pair.
+    Apply the training notebook's RGB/depth preprocessing to one image pair.
 
-    Returns a tensor of shape (1, 3, size, size), float32 in [0, 1].
+    Both images are cropped using the same bottom-centred square crop.
+    RGB is resized with area interpolation, while depth uses nearest-neighbour
+    interpolation. Normalised depth is then used as a soft mask on RGB.
+
+    Args:
+        rgb: RGB image as a NumPy array with shape (H, W, 3).
+        depth: Grayscale depth image as a NumPy array with shape (H, W).
+        size: Desired square input size for the U-Net.
+
+    Returns:
+        A float32 tensor of shape (1, 3, size, size), with values in [0, 1].
+
+    Raises:
+        ValueError: If size is invalid, the images have invalid shapes,
+            dimensions do not match, or depth contains only zeros.
     """
     if size <= 0:
         raise ValueError("size must be a positive integer")
 
     if rgb.ndim != 3 or rgb.shape[2] != 3:
-        raise ValueError(f"Expected RGB image with 3 channels; got {rgb.shape}")
-    if depth.ndim != 2:
-        raise ValueError(f"Expected single-channel depth image; got {depth.shape}")
+        raise ValueError(
+            f"Expected RGB image with 3 channels; got {rgb.shape}"
+        )
 
-    # The training notebook explicitly rejects misaligned source dimensions.
+    if depth.ndim != 2:
+        raise ValueError(
+            f"Expected single-channel depth image; got {depth.shape}"
+        )
+
     if rgb.shape[:2] != depth.shape[:2]:
         raise ValueError(
             f"RGB and depth dimensions must match; "
             f"got RGB {rgb.shape[:2]} and depth {depth.shape[:2]}"
         )
+
+    if rgb.shape[0] == 0 or rgb.shape[1] == 0:
+        raise ValueError("RGB image cannot be empty")
+
+    if depth.shape[0] == 0 or depth.shape[1] == 0:
+        raise ValueError("Depth image cannot be empty")
+
+    if not np.any(depth):
+        raise ValueError("Depth image contains only zeros")
+
+    # Apply the same bottom-centred square crop to both images.
+    height, width = rgb.shape[:2]
+    side = min(height, width)
+    x_start = (width - side) // 2
+    y_start = height - side
+
+    rgb_crop = rgb[
+        y_start:y_start + side,
+        x_start:x_start + side
+    ].copy()
+
+    depth_crop = depth[
+        y_start:y_start + side,
+        x_start:x_start + side
+    ].copy()
+
+    # Resize using the interpolation methods from the training notebook.
+    rgb_resized = cv2.resize(
+        rgb_crop,
+        (size, size),
+        interpolation=cv2.INTER_AREA,
+    )
+
+    depth_resized = cv2.resize(
+        depth_crop,
+        (size, size),
+        interpolation=cv2.INTER_NEAREST,
+    )
+
+    # Normalise depth and use it as a soft RGB mask.
+    depth_norm = depth_resized.astype(np.float32)
+    depth_norm /= float(depth_norm.max())
+
+    masked_rgb = np.clip(
+        rgb_resized.astype(np.float32) * depth_norm[..., None],
+        0,
+        255,
+    ).astype(np.uint8)
+
+    # Convert RGB from HWC to CHW, normalise, and add a batch dimension.
+    input_tensor = torch.from_numpy(
+        (masked_rgb.astype(np.float32) / 255.0).transpose(2, 0, 1)
+    ).unsqueeze(0)
+
+    return input_tensor
